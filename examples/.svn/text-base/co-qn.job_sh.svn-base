@@ -1,0 +1,8 @@
+#!/bin/tcsh
+
+cd $PBS_O_WORKDIR
+
+qn_relax -t 1 co-qn.nc
+
+#end
+

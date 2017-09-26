@@ -1,0 +1,258 @@
+#!/usr/bin/env python
+'''
+this module will submit a job to the queue when a calculation is called.
+
+Use this in a script like this:
+from ase import *
+from htp.queue_qn import *
+Jacapo.qsuboptions = '-l cput=23:00:00,mem=499mb -joe -p -1024'
+Jacapo.calculation_required = calculation_required
+Jacapo.calculate = queue_qn
+Jacapo.qnrelax_tags = [0,1,2]
+
+author:: John Kitchin <jkitchin@andrew.cmu.edu>
+'''
+
+import exceptions
+
+import commands, os, string, sys, time
+
+from torque.torque import *
+
+from ase import *
+from ase.calculators.jacapo import *
+
+from Scientific.IO.NetCDF import NetCDFFile
+  
+class DacapoAborted(exceptions.Exception):
+    def __init__(self,args=None):
+        self.args = args
+    def __str__(self):
+        return string.join(self.args,'')
+    
+class DacapoNotFinished(exceptions.Exception):
+    def __init__(self,args=None):
+        self.args = args
+    def __str__(self):
+        return string.join(self.args,'')
+    
+def calculation_required(self, atoms=None, quantities=None):
+    #we need to overwrite this method so calculate always gets called
+    return True
+
+def queue_qn(self,*args,**kwargs):
+    '''
+    this will replace the calculate method of the Jacapo Calculator
+    and run a job through the queue.
+    '''
+    CWD = os.getcwd()
+
+    wholencfile = self.get_nc()
+
+    basepath,NCFILE = os.path.split(wholencfile)
+    basename,ext = os.path.splitext(NCFILE)
+    TXTFILE = basename + '.txt'
+    runningfile =  NCFILE + '.running'
+    stopfile = NCFILE + '.stop'
+
+    JOBFILE = basename + '.job_sh'
+    JOBIDFILE = basename + '.jobid'
+
+    if not os.path.exists(wholencfile):
+        self.initnc()
+    self.write_nc()
+    self.write_input()
+
+    if basepath is not '':
+        #print 'changing to %s' % basepath
+        if not os.path.isdir(basepath):
+            os.makedirs(basepath)
+        os.chdir(basepath)
+
+    #print os.getcwd(), NCFILE
+    atoms = Jacapo.read_atoms(NCFILE)
+    self = atoms.get_calculator()
+    #print self
+
+    if self.get_status() == 'finished':
+        #this means the job is done.
+        #do some clean-up of unimportant files
+        for jfile in [JOBFILE,
+                      JOBIDFILE,
+                      runningfile,
+                      stopfile]:
+            if os.path.exists(jfile): os.remove(jfile)
+        #slave files from parallel runs
+        import glob
+        slvpattern = TXTFILE + '.slave*'
+        for slvf in glob.glob(slvpattern):
+            os.unlink(slvf)
+
+        #exit so that we can move on.
+        os.chdir(CWD)
+        return True
+
+    #Past here means we have to check if the calculation is running
+    if os.path.exists(JOBIDFILE):
+        JOBID = open(JOBIDFILE).readline()
+    else:
+        JOBID = None
+
+    # get a queue object
+    pbs = PBS()
+    pbs.fastpoll()
+
+    if JOBID is not None:
+        fields  = JOBID.split('.')
+        jobnumber = fields[0] + '.'
+        host = fields[1]
+        jobnumber += host
+        
+        #the job has been submitted before, and we need 
+        #to find out what the status of the jobid is
+        for job in pbs:
+            if job['Job Id'] == jobnumber.strip():
+                if job['job_state'] == 'R':
+                    os.chdir(CWD)
+                    raise JobRunning, job['job_state']
+                elif job['job_state'] == 'Q':
+                    os.chdir(CWD)
+                    raise JobInQueue, job['job_state']
+                elif  job['job_state'] == 'C':
+                    #this means the queue thinks the job is done
+                    #but has not purged it yet. we should pass
+                    #usually you should not get here if the job
+                    #is actually finished because teh function
+                    #would exit above.
+                    raise JobDone, job['job_state']
+                else:
+                    os.chdir(CWD)
+                    raise UnknownJobStatus, job['job_state']
+        # if you get here, the job is not in the queue anymore
+        # getting here means the job was not finished, and is not in
+        # the queue anymore, or that the queue has not flushed it yet.
+        OUTPUTFILE = JOBFILE + '.o' + jobnumber
+        #lets see if there is anything in the output file
+        if os.path.exists(OUTPUTFILE):
+            f = open(OUTPUTFILE)
+            for line in f:
+                if "=>> PBS: job killed: cput" in line:
+                    os.chdir(CWD)
+                    raise PBS_CputExceeded(line)
+                elif 'Terminated' in line:
+                    os.chdir(CWD)
+                    raise PBS_Terminated(line)
+
+        #check output of Dacapo
+        f = open(TXTFILE,'r')
+        for line in f:
+            if 'abort_calc' in line:
+                f.close()
+                os.chdir(CWD)
+                raise DacapoAborted, line
+            continue
+        f.close()
+
+        #check last line for proper finish
+        if not ('clexit: exiting the program' in line
+                or 'PAR: msexit halting Master' in line):
+            print self.get_nc()
+            os.unlink(JOBIDFILE)
+            os.chdir(CWD)
+            raise DacapoNotFinished, line
+        else:
+            #it appears the job is ok.
+            os.chdir(CWD)
+            return
+            
+        # something else must be wrong
+        os.chdir(CWD)
+        raise Exception,'something is wrong with your job: %s!' % OUTPUTFILE
+
+    #Past here, we need to submit a job.
+
+    job = '''\
+#!/bin/tcsh
+
+cd $PBS_O_WORKDIR
+
+qn_relax -t %(qntags)s %(ncfile)s
+stripnetcdf %(ncfile)s
+
+#end
+''' % {'qntags':string.join([str(t) for t in self.qnrelax_tags],','),
+       'ncfile':NCFILE}
+
+    f = open(JOBFILE,'w')
+    f.write(job+'\n')
+    f.close()
+    os.chmod(JOBFILE,0777)
+
+    #now we know we have to submit our job
+    cmd = 'qsub -j oe %s %s'  % (self.qsuboptions,JOBFILE)
+    status,output = commands.getstatusoutput(cmd)
+
+    if status == 0:
+        f = open(JOBIDFILE,'w')
+        f.write(output)
+        f.close()
+        os.chdir(CWD)
+        raise JobSubmitted, output
+    else:
+        print status, output
+        os.chdir(CWD)
+        raise Exception, 'Something is wrong with the qsub output'
+
+##    # now check if it finished correctly
+##    atoms = Jacapo.read_atoms(NCFILE)
+##    self = atoms.get_calculator()
+
+##    #check for dacapo errors
+##    TXTFILE = basename + '.txt'
+##    f = open(TXTFILE,'r')
+##    for line in f:
+##        if 'abort_calc' in line:
+##            f.close()
+##            os.chdir(CWD)
+##            raise DacapoAborted, line
+##        continue
+##    f.close()
+
+##    if not ('clexit: exiting the program' in line
+##            or 'PAR: msexit halting Master' in line):
+##        os.chdir(CWD)
+##        raise DacapoNotFinished, line
+
+##    stopfile = NCFILE + '.stop'
+##    if os.path.exists(stopfile):
+##        os.unlink(stopfile)
+
+##    runningfile =  NCFILE + '.running'
+##    if os.path.exists(runningfile):
+##        os.unlink(runningfile)
+
+##    #slave files from parallel runs
+##    import glob
+##    slvpattern = TXTFILE + '.slave*'
+##    for slvf in glob.glob(slvpattern):
+##        print 'deleting %s' % slv
+##        os.unlink(slvf)
+
+##    os.chdir(CWD)
+    return 0
+
+
+Jacapo.calculate = queue_qn
+Jacapo.qsuboptions = '-l cput=23:00:00,mem=499mb -joe -p -1024'
+Jacapo.calculation_required = calculation_required
+Jacapo.qnrelax_tags = [1]
+
+
+
+
+
+
+
+
+
+

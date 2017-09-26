@@ -1,0 +1,455 @@
+ &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+ & This job was run on not implemented
+ & This job was run on host: not implemented
+ & ============================================================ &
+ &                                                              &
+ &  Welcome to:                                                 &
+ &                                                              &
+ &                          D A C A P O                         &
+ &                                                              &
+ &  The plane wave - pseudopotential program                    &
+ &                                                              &
+ &  Version:                                                    &
+ &    $Name:  $ ($Date: 2005/06/13 12:12:18 $)                  &
+ &                                    ifc ser v2-3-4            &
+ &                                                              &
+ & ============================================================ &
+ &                                                              &
+ &   Recent contributors:                                       &
+ &                                                              &
+ &   2002-  J. Rossmeisl   (Electrostatic Decoupling)           &
+ &   1999-  A. Christensen (Fortran90 modularization,           &
+ &                          netCDF interface )                  &
+ &   1999-  T. Bligaard    (Fortran90)                          &
+ &   1996   Y. Morikawa    (Constrained dynamics)               &
+ &   1996   A.C.E.Madsen   (MD min)                             &
+ &   1996-  L.B.Hansen     (core corr.)                         &
+ &   1996   L.Bengtsson    (fast selfconsis. occ.s,             &
+ &                          power expansion method)             &
+ &   1995   J.J.Mortensen  (selfconsis. GGA)                    &
+ &   1995-  O.H.Nielsen    (parallellization + opt.)            &
+ &   1990-  B.Hammer                                            &
+ &                                                              &
+ &
+ &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+  
+  
+ FILE_IO: Reading netCDF formatted input from file: co-qn.nc
+ FILE_IO: Writing netCDF formatted output to file co-qn.nc
+ FILE_IO: Attempting to use same file for netCDF input/output
+ FILE_IO: Stopfilename: stop
+  
+ Structure: lattice scaling factor =   1.00000000
+ Structure:-----------------------------------------------------------
+ Structure: unit cell A            (lattice vectors coloumnwise) :
+ Structure:             A1           A2            A3
+ Structure:  x     6.00000000    0.00000000    0.00000000 Angstroem
+ Structure:  y     0.00000000    6.00000000    0.00000000 Angstroem
+ Structure:  z     0.00000000    0.00000000    6.00000000 Angstroem
+ Structure:-----------------------------------------------------------
+ Structure: recipical unit cell B  (vectors coloumnwise, A B^t = 2 Pi)
+ Structure:             B1           B2            B3
+ Structure: kx     1.04719755    0.00000000    0.00000000 1/Angstroem
+ Structure: ky     0.00000000    1.04719755    0.00000000 1/Angstroem
+ Structure: kz     0.00000000    0.00000000    1.04719755 1/Angstroem
+ Structure:-----------------------------------------------------------
+ Structure: Number of atoms (nions)           :     2
+ Structure: Number of different atoms (nspec) :     2
+ Structure: Internal atom mapping: -> ALL INFO IN THIS FILE REFERS TO THIS ATOM ORDER <-
+ Structure:   atom#  <->  (species, number)
+ Structure:     1              1      1
+ Structure:     2              2      1
+ 
+ Structure:-------------------------------------------------------------------------
+ Structure:  >>         Ionic positions in scaled coordinates (u,v,w)             <<
+ Structure:  atom#   Z        u            v            w         motion constraints
+ Structure:-------------------------------------------------------------------------
+ Structure:    1     6    0.00356937   0.00000000   0.00000000   1.000  1.000  1.000
+ Structure:    2     8    0.19630818   0.00000000   0.00000000   1.000  1.000  1.000
+ Structure:-------------------------------------------------------------------------
+ Structure:-------------------------------------------------------------------------
+ Structure:  >>         Ionic positions/velocities in cartesian coordinates       <<
+ Structure:  atom#   Z        x            y            z          initial velocity 
+ Structure:                           [Angstroem]                  [Angstroem/fs]   
+ Structure:-------------------------------------------------------------------------
+ Structure:    1     6    0.02141623   0.00000000   0.00000000   0.000  0.000  0.000
+ Structure:    2     8    1.17784908   0.00000000   0.00000000   0.000  0.000  0.000
+ Structure:-------------------------------------------------------------------------
+ Structure: 
+ Structure: Minimum distance between any two atoms (Angstroem) :  1.156
+ Structure: Mimimum distance found between atom  1 and atom  2 (for box repetition   0  0  0)
+ Structure: 
+ 
+ Structure: no spherical constrained pair was found
+  
+  
+ tmp_read: ------------------------- input summary -------------------------
+ tmp_read: nspin  =    1 (spin polarized calc = 2)
+ tmp_read: nbands =    6 (bands in calculation)
+ tmp_read: iscxc  =    3 [ XC Functional = PW91 (Perdew Wang 91)         GGA]
+ tmp_read: nsymax =    0 (maximum number of symmetries applied)
+ tmp_read: idebug =    0 (debugging level)
+ tmp_read: ------------------------------------------------------------------
+ 
+ 
+ PAD: ecut (wave function cutoff) =     350.0000 eV
+ FFT: Double grid used
+ PAD: ecut (wave function cutoff) =     350.0000 eV
+ PAD: ecut (dense grid cutoff)    =     350.0000 eV
+ PAD: minimum grid enclosing the sphere G^2 < 4*E_cut(WaweFct):  38x 38x 38
+ PAD: Number of G-vectors (ngdens) below 4*ecut :        25677
+ PAD: minimum grid enclosing the sphere G^2 < 4*E_cut(Density):  38x 38x 38
+ PAD: Number of G-vectors (ngdens) below 4*ecut :        25677
+ FFT: netCDF softgrid_dim found
+ FFT: ngx =  40 ngy =  40 ngz =  40
+ FFT: netCDF hardgrid_dim found
+ FFT: ngxhard =  40 ngyhard =  40 ngzhard =  40
+ SYM: There are           48  point operations in the lattice point group
+ SYM: There are            8  point operations in the space group
+ SYM: The identity:                 1
+ SYM: Number of 2-fold operations:  5
+ SYM: Number of 4-fold operations:  2
+ SYM: Needed are            3  generators:
+ SYM: The generator #  1 could not be used
+ SYM: The generator #  2 could not be used
+ SYM: The generator #  3 could not be used
+ SYM: Increase nsymax from:  0 to:   3 in order to use all symmetries
+ SYM: The inversion is not contained in the space group
+ SYM: The k-point set will be reduced via the time inversion symmetry
+ SYM: 
+ KPT:            1  BZ kpoints specified in file
+ KPT: k-points in the irriducible Brillouin zone (nkprun) :    1
+ KPT: ----------------------------------------------------------
+ KPT: k-point      k-point in units of          k-point
+ KPT: number      B1        B2       B3         weigth 
+ KPT: ----------------------------------------------------------
+ KPT:    1    0.000000  0.000000  0.000000    1.000000
+ KPT: ----------------------------------------------------------
+ KPT: 
+ KPT: Chadi-Cohen asymptotic error estimate:  0.011301469446
+ KPT: (see PRB 8, 5747 (1973); 13, 5188 (1976))
+  
+ KPT: nkpmem :            1
+ PAD:
+ PAD: Nominal # of PW  Average # of PW   Max # of PW
+ PAD: for this cutoff  in k-point set    in  k-point set
+ PAD:       3211.5899        3191.0000          3191
+ PAD:
+ PAD: Plane waves of E_kin below         25.72 Ryd =  350.00 eV accepted
+ PAD: Effective E_kin for plane waves    25.61 Ryd =  348.50 eV
+ call allocate_van_us_data
+ setuop:  
+ setuop:  ------ Task / iteration control ---------
+ setuop:  
+ setuop: Ion dynamics type  :  Static
+ setuop: Internal ion dynamics method:  Static
+ setuop: ConvergenceControl - niter  =       1000000 (max main loop iterations)
+ setuop: ConvergenceControl - uppcpu =  100000000.00 hours (cpu time hard limit)
+ setuop: ConvergenceControl - criteria for breaking electronic minimization:
+ setuop: ConvergenceControl - Absolute energy convergence =  0.10D-04
+ setuop: ConvergenceControl - Absolute density convergence =  0.10D-03
+ setuop: ConvergenceControl - Absolute occupation convergence =  0.10D-02
+ setuop: ConvergenceControl - Repeated convergences =     1
+ setuop: ConvergenceControl - Max absolute force change   =      0.100000 eV/A
+ setuop: ConvergenceControl - Max relative force change   =      0.050000  
+ setuop: Using eigsolve to diag. the hamiltonian
+ setuop: Occupation statistics type = FermiDirac
+ setuop: FermiTemperature =      0.010000  eV
+ setuop: ndiapb =             2 (diagonalizations per band)
+ setuop: dipole correction: off
+ setuop:  
+ setuop:  ------ printout setup ---------
+ setuop:  
+ setuop: Print spatial quantity:  None
+ setuop: Electronic work function not printed
+ setuop: Atom projected DOS not printed
+ setuop:  
+ setuop:  ------ atomic characteristics -------
+ setuop:  
+ 
+ setuop: ----------------------------------------------------------------
+ setuop: species  chemical  friction  dynamic mass
+ setuop: number    symbol    [0..1]       [u]     
+ setuop: ----------------------------------------------------------------
+ setuop:    1         C     0.500000    3.000000
+ setuop:    2         O     0.500000    3.000000
+ setuop: ----------------------------------------------------------------
+ PSP: pseudo-potential file for specie            1 :
+ /usr/matsim/dacapo.cvs/dacapo/psp/C_us_gga.pseudo
+
+    ============================================================
+    |  PSEUDOPOTENTIAL REPORT FOR ATOMIC SPECIES:  1           |
+    |        pseudo potential version   7   0   0              |
+    ------------------------------------------------------------
+    |  C  (US d-loc)        Perdew Wang 1991    EXCHANGE-CORR  |
+    |  Z(nuclear) =   6.    Z(valence)\( 1\) =   4.              |
+    |  Non linear core correction included:   0                |
+    |  Core radius non lin core corr.(RPCOR) =   0.00000   a.u.|
+    |  ATOMIC ENERGY =  -10.746116094 Ry                       |
+    |  Self consistent all electron atomic config:             |
+    |  INDEX    ORBITAL      OCCUPATION      ENERGY(Ry)        |
+    |    1        200           2.00      -1.013156182         |
+    |    2        210           2.00      -0.392915849         |
+    |  Radii for conservation of augmentation charge moments:  |
+    |  RINNER(a.u.) =   0.6000  0.6000  0.6000
+    |  (see Phys Rev B 47 10142 (1993), Eq.28)                 |
+    |  NEW GENERATION SCHEME:                                  |
+    |  Partial wave set used to generate projectors:           |
+    |  Number of radial partial waves (NBETA) =      4         |
+    |  Number of radial gridpts per wave (KKBETA) =    569     |
+    |  Pseudiz. radius for the local pspot (RCLOC) =  1.54 a.u.|
+    |  Partial wave set for generating the pseudopot:          |
+    |    IBETA   L        EPSILON(Ry)   RCUT(a.u.)             |
+    |      1     0      -1.013156180     1.50                  |
+    |      2     0      -0.392917947     1.50                  |
+    |      3     1      -1.013156180     1.54                  |
+    |      4     1      -0.392917947     1.54                  |
+    ============================================================
+ PSP:                       Valence-Z            4.0000
+ PSP:                       Core-alpha          26.7193
+ PSP: pseudo-potential file for specie            2 :
+ /usr/matsim/dacapo.cvs/dacapo/psp/co_gef_e13_gga.pseudo
+
+    ============================================================
+    |  PSEUDOPOTENTIAL REPORT FOR ATOMIC SPECIES:  2           |
+    |        pseudo potential version   7   0   0              |
+    ------------------------------------------------------------
+    |  oxygen               Perdew Wang 1991    EXCHANGE-CORR  |
+    |  Z(nuclear) =   8.    Z(valence)\( 2\) =   6.              |
+    |  Non linear core correction included:   0                |
+    |  Core radius non lin core corr.(RPCOR) =   2.43908   a.u.|
+    |  ATOMIC ENERGY =  -31.634296294 Ry                       |
+    |  Self consistent all electron atomic config:             |
+    |  INDEX    ORBITAL      OCCUPATION      ENERGY(Ry)        |
+    |    1        200           2.00      -1.760964278         |
+    |    2        210           4.00      -0.670166655         |
+    |  Radii for conservation of augmentation charge moments:  |
+    |  RINNER(a.u.) =   0.7000  0.7000  0.7000
+    |  (see Phys Rev B 47 10142 (1993), Eq.28)                 |
+    |  NEW GENERATION SCHEME:                                  |
+    |  Partial wave set used to generate projectors:           |
+    |  Number of radial partial waves (NBETA) =      4         |
+    |  Number of radial gridpts per wave (KKBETA) =    519     |
+    |  Pseudiz. radius for the local pspot (RCLOC) =  1.00 a.u.|
+    |  Partial wave set for generating the pseudopot:          |
+    |    IBETA   L        EPSILON(Ry)   RCUT(a.u.)             |
+    |      1     0      -1.760964691     1.30                  |
+    |      2     0      -0.670170483     1.30                  |
+    |      3     1      -1.760964691     1.30                  |
+    |      4     1      -0.670170483     1.30                  |
+    ============================================================
+ Number of different projectors :           16
+ Number of projectors :           16
+ PSP:                       Valence-Z            6.0000
+ PSP:                       Core-alpha          16.2053
+ setuop: Unit cell is charge neutral
+ setuop: Unit cell contains:    10.000000 electrons
+ setuop:   
+ setuop: netCDF output control
+ setuop: Output WaveFunction to NetCDF file
+ setuop: Output ChargeDensity to NetCDF file
+ setuop: Eff. Potential written to NetCDF file after convergence
+ setuop: Electrostatic potential written to NetCDF file after convergence
+ setuop: Stress tensor is not written to NetCDF file
+ setuop: ----------------------------------------------------------------
+ WFG: wavefunction array type = complex*16
+ 
+ density_mixing: Updating charge using Pulay mixing
+ density_mixing: ChargeMixing method : 
+ density_mixing: Pulay               
+ density_mixing: noldrd =   10 (charge mixing history)
+ density_mixing: denmix =      0.100000 (Pulay mixing coefficient)
+ density_mixing: GvectorFactor     1.000000
+ density_mixing: Using linear mixing (No Kerker preconditioning)
+ DAM     3190       0.009204       0.763925      32.767271
+------------------------------------------------------------------
+>>>>>>>>>>>>>>>>>>>> MAIN LOOP ITERATION    1 <<<<<<<<<<<<<<<<<<<<
+------------------------------------------------------------------
+ FFTW : Setup grid 1          40          40          40
+ damden: setup new d-matrix
+ TR2   -446.264413      0.000000   -497.886442   -452.391744     41.034271      0.000000    -36.894191      1.987250      0.000000   -497.886442    497.886442    452.391744   -137.855003      0.000000   -446.264413   -446.264413      0.000000
+ EIGSLV: Eigsolve was called with the following parameter:
+ EIGSLV:     lgenev:          T
+ EIGSLV:     n:                      3191
+ EIGSLV:     m:                         6
+ EIGSLV:     ldpsi:                  3191
+ EIGSLV:     blocksize:                 6
+ EIGSLV:     maxiter:                   2
+ EIGSLV:     max subsp. dim:           12
+ EIGSLV:     tolerance:        1.000000000000000E-004
+ TR0      E(free)      E(kin)       E(pot)       E(hac)       E(xcc)       E(vnl)       E(ewa)       E(alp)       E(eig)       E(ext)       E(zero)      E(tot)       E(dipc)
+ EXC     Exc_pz       Exc_gga      Exc_vwn      Exc_pbe    Exc_revPBE     Exc_RPBE
+ TR1   -591.184844    247.143506   -497.886442   -452.391744     41.034271      0.000000    -36.894191      1.987250   -144.920431      0.000000   -591.184844   -591.184844      0.000000
+ EXC   -134.482002   -137.855003   -134.518174   -137.272519   -138.005320   -138.144764
+ TOT:  CPU time                  Total energy
+ TOT:                   LDA            GGA            LDA
+ TOT:             PerdewZunger   PerdewWang91      VosWilNus
+ TOT:  CPU time   non-selfcons       selfcons   non-selfcons
+ TOT:   seconds          eV             eV             eV
+ DFT:  CPU time                           Total energy
+ DFT:                 LDA            GGA-II           PBE         revPBE          RPBE98       
+ DFT:             VoskoWilkNus   PerdewWang91   PerdewBurkeE   PBE_kap=1.245  PBE_0.804exp   
+ DFT:  CPU time   non-selfcons       selfcons   non-selfcons   non-selfcons   non-selfcons
+ DFT:   seconds          eV             eV             eV             eV            eV   
+ TOT:      11.4      -587.8118      -591.1848      -587.8480
+ DFT:      11.4      -587.8480      -591.1848      -590.6024      -591.3352      -591.4746
+ FOR:  Ion    F_x      F_y      F_z
+ FOR:   #     eV/A     eV/A     eV/A
+ FOR:   1  -0.1993652   0.0000000   0.0000000
+ FOR:   2   0.9798833   0.0000000   0.0000000
+ convergence:    
+ convergence:                Change in
+ convergence:       Density       Occup.     Energy    |F|      dF/F    |Abs. fo
+ rce|
+ convergence:      0.000000     0.000000  -591.184844336   1.000   1.000   1.000
+------------------------------------------------------------------
+>>>>>>>>>>>>>>>>>>>> MAIN LOOP ITERATION    2 <<<<<<<<<<<<<<<<<<<<
+------------------------------------------------------------------
+ DAM:   0       0.035716
+ damden: setup new d-matrix
+ TR1   -591.184768    247.149025   -497.878941   -452.412934     41.035118      0.000000    -36.894191      1.987250   -144.900012      0.000000   -591.184768   -591.184768      0.000000
+ EXC   -134.484702   -137.857605   -134.520885   -137.275180   -138.007985   -138.147402
+ TOT:      13.7      -587.8119      -591.1848      -587.8480
+ DFT:      13.7      -587.8480      -591.1848      -590.6023      -591.3351      -591.4746
+ FOR:   1  -0.1752992   0.0000000   0.0000000
+ FOR:   2   0.8196095   0.0000000   0.0000000
+ convergence:      0.035716     0.000000     0.000076648   0.162   0.193   0.838
+------------------------------------------------------------------
+>>>>>>>>>>>>>>>>>>>> MAIN LOOP ITERATION    3 <<<<<<<<<<<<<<<<<<<<
+------------------------------------------------------------------
+ DAM:   1       0.027758
+ damden: setup new d-matrix
+ TR1   -591.184645    247.117163   -497.837536   -452.547001     41.040691      0.000000    -36.894191      1.987250   -144.771395      0.000000   -591.184645   -591.184645      0.000000
+ EXC   -134.502283   -137.875609   -134.538504   -137.293165   -138.026037   -138.165472
+ TOT:      16.0      -587.8113      -591.1846      -587.8475
+ DFT:      16.0      -587.8475      -591.1846      -590.6022      -591.3351      -591.4745
+ FOR:   1  -0.0643880   0.0000000   0.0000000
+ FOR:   2   0.0671838   0.0000000   0.0000000
+ convergence:      0.027758     0.000000     0.000122651   0.761   8.173   0.093
+------------------------------------------------------------------
+>>>>>>>>>>>>>>>>>>>> MAIN LOOP ITERATION    4 <<<<<<<<<<<<<<<<<<<<
+------------------------------------------------------------------
+ DAM:   2       0.008205
+ damden: setup new d-matrix
+ TR1   -591.184659    247.119376   -497.855224   -452.499263     41.038714      0.000000    -36.894191      1.987250   -144.817170      0.000000   -591.184659   -591.184659      0.000000
+ EXC   -134.496086   -137.869362   -134.532287   -137.286801   -138.019623   -138.159051
+ TOT:      18.3      -587.8114      -591.1847      -587.8476
+ DFT:      18.3      -587.8476      -591.1847      -590.6021      -591.3349      -591.4743
+ FOR:   1  -0.0967897   0.0000000   0.0000000
+ FOR:   2   0.4160055   0.0000000   0.0000000
+ convergence:      0.008205     0.000000    -0.000013815   0.350   0.820   0.427
+------------------------------------------------------------------
+>>>>>>>>>>>>>>>>>>>> MAIN LOOP ITERATION    5 <<<<<<<<<<<<<<<<<<<<
+------------------------------------------------------------------
+ DAM:   3       0.005451
+ damden: setup new d-matrix
+ TR1   -591.184630    247.077409   -497.827244   -452.600614     41.042872      0.000000    -36.894191      1.987250   -144.719947      0.000000   -591.184630   -591.184630      0.000000
+ EXC   -134.509216   -137.882725   -134.545442   -137.300186   -138.033033   -138.172476
+ TOT:      20.6      -587.8111      -591.1846      -587.8473
+ DFT:      20.6      -587.8473      -591.1846      -590.6021      -591.3349      -591.4744
+ FOR:   1   0.0078277   0.0000000   0.0000000
+ FOR:   2  -0.0502791   0.0000000   0.0000000
+ convergence:      0.005451     0.000000     0.000029148   0.478   9.391   0.051
+------------------------------------------------------------------
+>>>>>>>>>>>>>>>>>>>> MAIN LOOP ITERATION    6 <<<<<<<<<<<<<<<<<<<<
+------------------------------------------------------------------
+ DAM:   4       0.000548
+ damden: setup new d-matrix
+ TR1   -591.184633    247.079385   -497.829897   -452.588800     41.042338      0.000000    -36.894191      1.987250   -144.731230      0.000000   -591.184633   -591.184633      0.000000
+ EXC   -134.507533   -137.881002   -134.543755   -137.298445   -138.031281   -138.170724
+ TOT:      22.9      -587.8112      -591.1846      -587.8474
+ DFT:      22.9      -587.8474      -591.1846      -590.6021      -591.3349      -591.4744
+ FOR:   1  -0.0035653   0.0000000   0.0000000
+ FOR:   2  -0.0163659   0.0000000   0.0000000
+ convergence:      0.000548     0.000000    -0.000002996   0.036   2.136   0.017
+------------------------------------------------------------------
+>>>>>>>>>>>>>>>>>>>> MAIN LOOP ITERATION    7 <<<<<<<<<<<<<<<<<<<<
+------------------------------------------------------------------
+ DAM:   5       0.000359
+ damden: setup new d-matrix
+ TR1   -591.184631    247.104869   -497.843550   -452.524708     41.039139      0.000000    -36.894191      1.987250   -144.792121      0.000000   -591.184631   -591.184631      0.000000
+ EXC   -134.497369   -137.870422   -134.533570   -137.287891   -138.020642   -138.160076
+ TOT:      25.2      -587.8116      -591.1846      -587.8478
+ DFT:      25.2      -587.8478      -591.1846      -590.6021      -591.3349      -591.4743
+ FOR:   1  -0.0320917   0.0000000   0.0000000
+ FOR:   2   0.1014019   0.0000000   0.0000000
+ convergence:      0.000359     0.000000     0.000001544   0.121   1.139   0.106
+------------------------------------------------------------------
+>>>>>>>>>>>>>>>>>>>> MAIN LOOP ITERATION    8 <<<<<<<<<<<<<<<<<<<<
+------------------------------------------------------------------
+ DAM:   6       0.000434
+ damden: setup new d-matrix
+ TR1   -591.184625    247.093848   -497.836537   -452.554773     41.040508      0.000000    -36.894191      1.987250   -144.763420      0.000000   -591.184625   -591.184625      0.000000
+ EXC   -134.501694   -137.874881   -134.537905   -137.292352   -138.025128   -138.164564
+ TOT:      27.5      -587.8114      -591.1846      -587.8476
+ DFT:      27.5      -587.8476      -591.1846      -590.6021      -591.3349      -591.4743
+ FOR:   1  -0.0078922   0.0000000   0.0000000
+ FOR:   2   0.0061755   0.0000000   0.0000000
+ convergence:      0.000434     0.000000     0.000005658   0.098   9.805   0.010
+------------------------------------------------------------------
+>>>>>>>>>>>>>>>>>>>> MAIN LOOP ITERATION    9 <<<<<<<<<<<<<<<<<<<<
+------------------------------------------------------------------
+ DAM:   7       0.000003
+ damden: setup new d-matrix
+ TR1   -591.184628    247.088682   -497.835396   -452.564945     41.041071      0.000000    -36.894191      1.987250   -144.753813      0.000000   -591.184628   -591.184628      0.000000
+ EXC   -134.503495   -137.876773   -134.539709   -137.294229   -138.027021   -138.166458
+ TOT:      29.8      -587.8113      -591.1846      -587.8476
+ DFT:      29.8      -587.8476      -591.1846      -590.6021      -591.3349      -591.4743
+ FOR:   1  -0.0068808   0.0000000   0.0000000
+ FOR:   2  -0.0047884   0.0000000   0.0000000
+ TOT:      stopping    0.000002
+ convergence:      0.000003     0.000000    -0.000002081   0.011   1.313   0.008
+ ANALYSIS PART OF CODE
+ EIG   Nb  Nkpt   Eigen value      Occupation 
+ EIG   1   1    -26.1215682829    2.0000000000
+ EIG   2   1    -10.9709867762    2.0000000000
+ EIG   3   1     -8.6189110786    2.0000000000
+ EIG   4   1     -8.6189096050    2.0000000000
+ EIG   5   1     -6.0465309699    2.0000000000
+ EIG   6   1      0.8123333233    0.0000000000
+ Wannier: kpoints in direction n            1           1
+ Wannier: kpoints in direction n            2           1
+ Wannier: kpoints in direction n            3           1
+ TIM: Number of iterations =            9
+ TIM: Seconds User:    30.5 System:     0.0 U+S:    30.5
+ TIM: Setup         9.3%        2.8 CPU seconds (   0.316 sec/iter)
+ TIM: damden       65.5%       20.0 CPU seconds (   2.222 sec/iter)
+ TIM: localF        9.3%        2.8 CPU seconds (   0.314 sec/iter)
+ TIM: nsc energy   14.1%        4.3 CPU seconds (   0.479 sec/iter)
+ TIM: Analysis      1.4%        0.4 CPU seconds (   0.048 sec/iter)
+ TIM: libtos        0.4%        0.1 CPU seconds (   0.015 sec/iter)
+ TIM:             ------  ---------------------
+ TIM: Sum         100.0%       30.5 CPU seconds (   3.393 sec/iter)
+ TIM:             ======  =====================
+ TIM:
+ TIM: Timing of some individual parts
+ TIM: nonlocF       8.4%        2.6 CPU seconds (   0.284 sec/iter)
+ TIM:   -vkbloop    0.4%        0.1 CPU seconds (   0.013 sec/iter)
+ TIM:   -newdd      8.0%        2.4 CPU seconds (   0.271 sec/iter)
+ TIM: Ewald         0.2%        0.1 CPU seconds (   0.007 sec/iter)
+ TIM: cal_bec       0.3%        0.1 CPU seconds (   0.009 sec/iter)
+ TIM: -loop1        0.2%        0.1 CPU seconds (   0.008 sec/iter)
+ TIM: V_NL          0.2%        0.1 CPU seconds (   0.008 sec/iter)
+ TIM: V_NL1         0.4%        0.1 CPU seconds (   0.012 sec/iter)
+ TIM: V_NL2         0.2%        0.1 CPU seconds (   0.006 sec/iter)
+ TIM:
+ TIM: Timing of individual parts of damden
+ TIM: damden       54.9%       16.8 CPU seconds (   1.862 sec/iter)
+ TIM: -addusdens    8.5%        2.6 CPU seconds (   0.288 sec/iter)
+ TIM: -nonlocF      8.4%        2.6 CPU seconds (   0.284 sec/iter)
+ TIM: -newd         8.1%        2.5 CPU seconds (   0.273 sec/iter)
+ TIM: --ddot        0.1%        0.0 CPU seconds (   0.002 sec/iter)
+ TIM: -tidyup       6.4%        2.0 CPU seconds (   0.217 sec/iter)
+ TIM: H_diagonal   10.6%        3.2 CPU seconds (   0.360 sec/iter)
+ TIM: -apply_H     10.0%        3.1 CPU seconds (   0.340 sec/iter)
+ TIM:  -vnlwav      0.8%        0.2 CPU seconds (   0.026 sec/iter)
+ TIM:  -wf_FFT      7.8%        2.4 CPU seconds (   0.264 sec/iter)
+ TIM: -Updat_wf     0.0%        0.0 CPU seconds (   0.001 sec/iter)
+ TIM: -BLAS_ops     0.6%        0.2 CPU seconds (   0.020 sec/iter)
+ TIM: -Restart      0.4%        0.1 CPU seconds (   0.012 sec/iter)
+ TIM: -Residual     0.0%        0.0 CPU seconds (   0.001 sec/iter)
+ TIM: Subroutine apply_H was called    27 times (   0.113 sec/call)
+ TIM: -Form_BHB     0.0%        0.0 CPU seconds (   0.001 sec/iter)
+ TIM: -vec_rotat    0.2%        0.1 CPU seconds (   0.008 sec/iter)
+ TIM: -residual     0.0%        0.0 CPU seconds (   0.001 sec/iter)
+ clexit: exiting the program

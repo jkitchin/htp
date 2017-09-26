@@ -1,0 +1,63 @@
+Warning: no access to tty (Bad file descriptor).
+Thus no job control in this shell.
+BFGS:   0  10:05:44     -591.081446       4.5012
+posmatch =  False
+cellmatch =  True [[ 6.  0.  0.]
+ [ 0.  6.  0.]
+ [ 0.  0.  6.]] [[ 6.  0.  0.]
+ [ 0.  6.  0.]
+ [ 0.  0.  6.]]
+lenmatch =  True
+posmatch =  False
+cellmatch =  True [[ 6.  0.  0.]
+ [ 0.  6.  0.]
+ [ 0.  0.  6.]] [[ 6.  0.  0.]
+ [ 0.  6.  0.]
+ [ 0.  0.  6.]]
+lenmatch =  True
+BFGS:   1  10:06:18     -591.097044       5.0565
+posmatch =  False
+cellmatch =  True [[ 6.  0.  0.]
+ [ 0.  6.  0.]
+ [ 0.  0.  6.]] [[ 6.  0.  0.]
+ [ 0.  6.  0.]
+ [ 0.  0.  6.]]
+lenmatch =  True
+posmatch =  False
+cellmatch =  True [[ 6.  0.  0.]
+ [ 0.  6.  0.]
+ [ 0.  0.  6.]] [[ 6.  0.  0.]
+ [ 0.  6.  0.]
+ [ 0.  0.  6.]]
+lenmatch =  True
+BFGS:   2  10:07:05     -591.182483       0.7223
+posmatch =  False
+cellmatch =  True [[ 6.  0.  0.]
+ [ 0.  6.  0.]
+ [ 0.  0.  6.]] [[ 6.  0.  0.]
+ [ 0.  6.  0.]
+ [ 0.  0.  6.]]
+lenmatch =  True
+posmatch =  False
+cellmatch =  True [[ 6.  0.  0.]
+ [ 0.  6.  0.]
+ [ 0.  0.  6.]] [[ 6.  0.  0.]
+ [ 0.  6.  0.]
+ [ 0.  0.  6.]]
+lenmatch =  True
+BFGS:   3  10:07:41     -591.184596       0.1044
+posmatch =  False
+cellmatch =  True [[ 6.  0.  0.]
+ [ 0.  6.  0.]
+ [ 0.  0.  6.]] [[ 6.  0.  0.]
+ [ 0.  6.  0.]
+ [ 0.  0.  6.]]
+lenmatch =  True
+posmatch =  False
+cellmatch =  True [[ 6.  0.  0.]
+ [ 0.  6.  0.]
+ [ 0.  0.  6.]] [[ 6.  0.  0.]
+ [ 0.  6.  0.]
+ [ 0.  0.  6.]]
+lenmatch =  True
+BFGS:   4  10:08:12     -591.184628       0.0069
